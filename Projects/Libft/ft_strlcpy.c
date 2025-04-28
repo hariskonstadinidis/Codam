@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/18 16:21:30 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/04/28 15:30:45 by hariskon         ###   ########.fr       */
+/*   Created: 2025/04/28 15:06:58 by hariskon          #+#    #+#             */
+/*   Updated: 2025/04/28 15:24:33 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <string.h>
-#include "file.h"
+#include <stddef.h>
 
-int main()
+size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {
-    
-    char b[3] = "Hello"
-    char a[3] = {'a', 'f', 'b'};
-    
-
-    printf("%p %p\n", a, b);
-    // printf("The difference is %s\n", memmove(b, a, 3));
-    printf("The difference is %s\n", ft_memmove(b, a, 3));
-    return (0);
-    
+	size_t	i;
+	size_t	len;
+	
+	i = 0;
+	while (src[i])
+		i++;
+	if (size == 0)
+		return (i);
+	len = size - 1;
+	while (i < len)
+		dest [i] = src[i];
+	dest[i] = '\0';
 }
