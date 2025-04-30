@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:38:58 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/04/29 16:42:45 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:06:34 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void *ft_memmove();
 size_t ft_strlcpy();
 char *ft_strnstr();
 size_t ft_strlcat();
-
+int ft_atoi();
 
 
 #endif

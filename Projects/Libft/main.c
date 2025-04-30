@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:21:30 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/04/29 17:15:28 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/04/30 14:35:04 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,10 @@
 int main()
 {
     
-    const char src[10] = "Hello";
+    char src[10] = "12- +-2 -123 44";
     char dest[10] = "ll";
     int i;
     
-    for (i = -1; i < 7; i++)
-    {
-        printf("%s %ld\n", dest, strlcat(dest , src, i));
-        dest[0] = 'l';
-        dest[1] = 'l';
-        dest[2] = '\0'; 
-    }
-    printf("\n");
-    for (i = -1; i < 7; i++)
-    {
-        printf("%s %ld\n", dest, ft_strlcat(dest , src, i));
-        dest[0] = 'l';
-        dest[1] = 'l';
-        dest[2] = '\0'; 
-    }
-    
+    printf("%d\n", ft_atoi(src));
     return (0);
 }

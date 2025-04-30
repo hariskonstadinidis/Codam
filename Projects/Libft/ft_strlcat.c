@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:16:07 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/29 17:29:51 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/04/30 13:42:31 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 	i = 0;
 	if (size <= destlen)
 		return (size + srclen);
-	while (destlen + i +1 < size && src[i])
+	while (destlen + i + 1 < size && src[i])
 	{
 		dest[destlen + i] = src[i];
 		i++;
