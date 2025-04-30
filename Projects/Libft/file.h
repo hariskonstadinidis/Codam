@@ -6,19 +6,19 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:38:58 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/04/30 14:06:34 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:00:07 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILE_H
 #define FILE_H
 
-int ft_isalpha();
-int ft_isdigit();
-int ft_isalnum();
-int ft_isascii();
-int ft_isprint();
-int ft_strlen();
+int ft_isalpha(char a);
+int ft_isdigit(char a);
+int ft_isalnum(char a);
+int ft_isascii(char a);
+int ft_isprint(char a);
+int ft_strlen(char *array);
 int ft_toupper();
 int ft_tolower();
 char *ft_strchr();
@@ -33,7 +33,7 @@ void *ft_memmove();
 size_t ft_strlcpy();
 char *ft_strnstr();
 size_t ft_strlcat();
-int ft_atoi();
+int ft_atoi(char *array);
 
 
 #endif
