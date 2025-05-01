@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 14:33:29 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/01 15:31:35 by hariskon         ###   ########.fr       */
+/*   Created: 2025/05/01 15:48:19 by hariskon          #+#    #+#             */
+/*   Updated: 2025/05/01 16:33:31 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(const char *array)
-{
-	int	i;
+#include <string.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include "file.h"
 
-	i = 0;
-	while (array[i])
-	{
-		i++;
-	}
-	return (i);
+char	*ft_strdup(const char *src)
+{
+	size_t	len;
+	char	*new_string;
+
+	len = ft_strlen(src) + 1;
+	new_string = malloc(len);
+	if (new_string == NULL)
+		return (NULL);
+	ft_memcpy(new_string, src, len);
+	return (new_string);
 }

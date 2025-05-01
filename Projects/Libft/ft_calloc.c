@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 14:33:29 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/01 15:31:35 by hariskon         ###   ########.fr       */
+/*   Created: 2025/05/01 14:45:34 by hariskon          #+#    #+#             */
+/*   Updated: 2025/05/01 15:42:02 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(const char *array)
+#include <stddef.h>
+#include <stdlib.h>
+#include "file.h"
+
+void	*ft_calloc(size_t num_elements, size_t elements_size)
 {
-	int	i;
+	void	*ptr;
+	int		i;
 
 	i = 0;
-	while (array[i])
-	{
-		i++;
-	}
-	return (i);
+	ptr = malloc(num_elements * elements_size);
+	if (ptr == NULL)
+		return (NULL);
+	ft_memset(ptr, 0, elements_size * num_elements);
+	return (ptr);
 }
