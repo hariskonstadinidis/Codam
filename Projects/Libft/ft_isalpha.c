@@ -6,11 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:17:06 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/04/23 13:07:15 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:00:49 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isalpha(char a)
+int	ft_isalpha(int a)
 {
 	if ((a <= 90 && a >= 65) || (a <= 122 && a >= 97))
 	{

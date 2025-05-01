@@ -6,13 +6,13 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:10:10 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/23 13:11:09 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:00:57 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 int	ft_isdigit(int digit)
 {
-	if (digit >= 48 && digit <= 57)
+	if (digit >= '0' && digit <= '9')
 	{
 		return (1);
 	}

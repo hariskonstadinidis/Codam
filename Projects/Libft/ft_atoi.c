@@ -6,22 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:49:00 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/30 14:34:14 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/01 13:56:46 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isspace(char a)
-{
-	if (a == ' ' || a == '\f' || a == '\n'
-		|| a == '\r' || a == '\t' || a == '\v')
-	{
-		return (1);
-	}
-	else
-	{
-		return (0);
-	}
-}
+int	ft_isspace(char a);
 
 int	ft_atoi(char *str)
 {
@@ -47,4 +36,17 @@ int	ft_atoi(char *str)
 	}
 	result = symbol * result;
 	return ((int)result);
+}
+
+int	ft_isspace(char a)
+{
+	if (a == ' ' || a == '\f' || a == '\n'
+		|| a == '\r' || a == '\t' || a == '\v')
+	{
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
 }

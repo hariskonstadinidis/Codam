@@ -6,11 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:18:10 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/23 14:28:12 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:00:53 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isascii(char a)
+int	ft_isascii(int a)
 {
 	if (a >= 0 && a <= 127)
 	{

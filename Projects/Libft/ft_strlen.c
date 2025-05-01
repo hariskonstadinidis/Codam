@@ -6,16 +6,16 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:33:29 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/29 16:54:08 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/01 14:06:45 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(char *string)
+int	ft_strlen(char *array)
 {
 	int	i;
 
 	i = 0;
-	while (string[i])
+	while (array[i])
 	{
 		i++;
 	}
