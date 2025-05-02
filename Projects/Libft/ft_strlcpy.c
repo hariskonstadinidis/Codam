@@ -6,11 +6,12 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 15:06:58 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/29 16:12:39 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:13:03 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
+#include "file.h"
 
 size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 {

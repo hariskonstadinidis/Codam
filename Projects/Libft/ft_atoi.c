@@ -6,9 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 13:49:00 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/01 13:56:46 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:16:25 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "file.h"
 
 int	ft_isspace(char a);
 

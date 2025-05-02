@@ -6,9 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 15:05:55 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/01 14:00:36 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:13:20 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "file.h"
 
 int	ft_tolower(int a)
 {

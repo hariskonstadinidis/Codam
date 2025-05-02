@@ -6,9 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:17:06 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/05/01 14:00:49 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:17:13 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "file.h"
 
 int	ft_isalpha(int a)
 {

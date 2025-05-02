@@ -6,12 +6,13 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:14:57 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/01 15:47:57 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:16:14 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILE_H
 #define FILE_H
+#include <stddef.h>
 
 int		ft_isalpha(int a);
 int		ft_isdigit(int a);

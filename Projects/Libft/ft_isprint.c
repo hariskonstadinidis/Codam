@@ -6,9 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:06:40 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/01 14:01:01 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:12:01 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "file.h"
 
 int	ft_isprint(int a)
 {

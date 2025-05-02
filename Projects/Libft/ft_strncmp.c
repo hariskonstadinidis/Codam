@@ -6,9 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 17:15:11 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/23 17:29:35 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:13:08 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "file.h"
 
 int	ft_strncmp(const char *s1, const char *s2, int size)
 {

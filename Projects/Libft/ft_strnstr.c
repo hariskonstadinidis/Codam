@@ -6,11 +6,12 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:48:53 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/29 16:11:38 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 15:13:12 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
+#include "file.h"
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t size)
 {
