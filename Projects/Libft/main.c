@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 16:21:30 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/05/02 15:13:30 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:12:17 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int main()
     //     i++;
     // }
     
-    dest = ft_strdup(src);
-    printf("%s", dest);
+    // dest = ft_strdup(src);
+    // printf("%s", dest);
+    ft_bzero(dest, 2);
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:16:10 by hariskon          #+#    #+#             */
-/*   Updated: 2025/04/25 16:02:56 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:24:25 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 void	*ft_memmove(void *dest, const void *src, size_t size)
 {
 	size_t			i;
-	unsigned char	*temp;
+	unsigned char	temp[size];
 
 	i = 0;
-	if (src > dest && (src - dest < size))
+	if (src > dest && (src - dest < (long int)size))
 	{
 		while (i < size)
 		{

@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:14:57 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 15:16:14 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:27:42 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	*ft_memchr(void *array, int value, size_t size);
 void	*ft_memcpy(void *dest, const void *src, size_t size);
 int		ft_memcmp(const void *array1, const void *array2, size_t size);
 void	*ft_memmove(void *dest, const void *src, size_t size);
-void	*ft_bzero(void *array, size_t size);
+void	ft_bzero(void *array, size_t size);
 
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 size_t	ft_strlcat(char *dest, const char *src, size_t size);
