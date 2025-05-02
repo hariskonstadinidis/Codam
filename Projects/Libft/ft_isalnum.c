@@ -6,11 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:14:46 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/05/02 15:11:34 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:49:34 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "file.h"
+#include "libft.h"
 
 int	ft_isalnum(int a)
 {

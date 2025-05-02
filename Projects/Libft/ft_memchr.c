@@ -6,12 +6,12 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:22:51 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 17:14:55 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:49:53 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
-#include "file.h"
+#include "libft.h"
 
 void	*ft_memchr(void *array, int value, size_t size)
 {

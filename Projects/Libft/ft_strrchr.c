@@ -6,11 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 16:45:45 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 15:13:16 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:50:40 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "file.h"
+#include "libft.h"
 
 char	*ft_strrchr(char *letter, int a)
 {

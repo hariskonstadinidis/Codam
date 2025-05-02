@@ -6,11 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:58:31 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 15:13:24 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:50:53 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "file.h"
+#include "libft.h"
 
 int	ft_toupper(int a)
 {

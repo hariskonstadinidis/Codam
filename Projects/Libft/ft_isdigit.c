@@ -6,11 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 13:10:10 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 15:11:57 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:49:46 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "file.h"
+#include "libft.h"
 
 int	ft_isdigit(int digit)
 {

@@ -6,12 +6,12 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:16:07 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/01 15:28:03 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:50:23 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
-#include "file.h"
+#include "libft.h"
 
 size_t	ft_strlcat(char *dest, const char *src, size_t size)
 {

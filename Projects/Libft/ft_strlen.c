@@ -6,11 +6,11 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:33:29 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 15:12:57 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:50:31 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "file.h"
+#include "libft.h"
 
 int	ft_strlen(const char *array)
 {

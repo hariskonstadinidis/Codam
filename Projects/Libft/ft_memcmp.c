@@ -6,12 +6,12 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 14:12:44 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 15:12:16 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:49:58 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
-#include "file.h"
+#include "libft.h"
 
 int	ft_memcmp(const void *array1, const void *array2, size_t size)
 {

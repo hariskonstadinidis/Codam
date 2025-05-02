@@ -6,14 +6,14 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 15:48:19 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 15:16:35 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/02 17:50:19 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include "file.h"
+#include "libft.h"
 
 char	*ft_strdup(const char *src)
 {
