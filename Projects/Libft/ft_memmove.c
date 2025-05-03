@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:16:10 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/03 14:03:26 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:06:03 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,11 @@ void	*ft_memmove(void *dest, const void *src, size_t size)
 	unsigned char	temp[size];
 
 	i = 0;
-	if (src > dest && (src - dest < (long int)size))
+	while (i < size)
 	{
-		while (i < size)
-		{
-			temp[i] = ((unsigned char *)src)[i];
-			i++;
-		}
-		ft_memcpy(dest, temp, size);
+		temp[i] = ((unsigned char *)src)[i];
+		i++;
 	}
-	else
-	{
-		ft_memcpy(dest, temp, size);
-	}
+	ft_memcpy(dest, temp, size);
 	return (dest);
 }
