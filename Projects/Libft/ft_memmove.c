@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 15:16:10 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 17:50:07 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/03 14:03:26 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*ft_memmove(void *dest, const void *src, size_t size)
 	}
 	else
 	{
-		ft_memcpy(dest, src, size);
+		ft_memcpy(dest, temp, size);
 	}
 	return (dest);
 }
