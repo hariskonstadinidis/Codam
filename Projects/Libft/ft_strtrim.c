@@ -1,38 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 13:42:10 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/07 16:22:19 by hariskon         ###   ########.fr       */
+/*   Created: 2025/05/07 13:02:12 by hariskon          #+#    #+#             */
+/*   Updated: 2025/05/07 16:31:47 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include <stddef.h>
+#include <stdlib.h>
 #include "libft.h"
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_strtrim(const char *s1, const char *set)
 {
-	size_t	i;
-	size_t	new_len;
-	char	*substring;
+	char	*new;
+	size_t	start;
+	size_t	end;
+	size_t	len;
 
-	i = 0;
-	if (s == NULL)
+	if (s1 == NULL || set == NULL)
 		return (NULL);
-	new_len = ft_strlen(s);
-	if (new_len <= (size_t)start)
-		len = 0;
-	else if (new_len - start < len)
-		len = new_len - start;
-	substring = malloc(len + 1);
-	if (substring == NULL)
+	start = 0;
+	end = ft_strlen(s1);
+	while (start < end && ft_strchr((char *)set, s1[start]))
+		start++;
+	while (end > start && ft_strchr((char *)set, s1[end - 1]))
+		end--;
+	len = end - start;
+	new = malloc(len + 1);
+	if (new == NULL)
 		return (NULL);
-	while (i < len && s[start] != '\0')
-		substring[i++] = s[start++];
-	substring[i] = '\0';
-	return (substring);
+	ft_memcpy(new, s1 + start, len);
+	new[len] = '\0';
+	return (new);
 }

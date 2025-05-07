@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:20:16 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/06 15:28:12 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/07 16:43:36 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,8 @@ char	*ft_strdup(const char *src);
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char    *ft_strjoin(char const *s1, char const *s2);
+char    *ft_strtrim(char const *s1, char const *set);
+char	**ft_split(char const *s, char c);
+char	*ft_itoa(int n);
 
 #endif
