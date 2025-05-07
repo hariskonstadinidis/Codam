@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 17:15:11 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/05 15:19:18 by hariskon         ###   ########.fr       */
+/*   Created: 2025/05/03 15:44:23 by hariskon          #+#    #+#             */
+/*   Updated: 2025/05/05 16:23:46 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, int size)
+int main(void)
 {
-	int	i;
+    // char a[10] = "test\200";
+    // char b[10] = "test\0";
+    // printf("%d", ft_strncmp(a,b,8));
 
-	i = 0;
-	while ((s1[i] || s2[i]) && i < size)
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
+    char a[10] = "teste";
+    printf("%p", ft_strchr(a, 1024));
 }

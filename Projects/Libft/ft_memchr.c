@@ -6,17 +6,17 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:22:51 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 17:49:53 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/06 12:44:44 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 #include "libft.h"
 
-void	*ft_memchr(void *array, int value, size_t size)
+void	*ft_memchr(const void *array, int value, size_t size)
 {
 	size_t				i;
-	unsigned char	p;
+	unsigned char		p;
 
 	i = 0;
 	p = (unsigned char)value;
@@ -28,5 +28,5 @@ void	*ft_memchr(void *array, int value, size_t size)
 		}
 		i++;
 	}
-	return (&((unsigned char *)array)[i]);
+	return (NULL);
 }

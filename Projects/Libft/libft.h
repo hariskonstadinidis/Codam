@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file.h                                             :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/01 14:14:57 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/02 17:27:42 by hariskon         ###   ########.fr       */
+/*   Created: 2025/05/06 13:20:16 by hariskon          #+#    #+#             */
+/*   Updated: 2025/05/06 15:28:12 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILE_H
-#define FILE_H
+#ifndef LIBFT_H
+#define LIBFT_H
 #include <stddef.h>
 
 int		ft_isalpha(int a);
@@ -29,7 +29,7 @@ char	*ft_strrchr(char *letter, int a);
 int		ft_strncmp(const char *s1, const char *s2, int size);
 
 void	*ft_memset(void *array, int value, size_t size);
-void	*ft_memchr(void *array, int value, size_t size);
+void	*ft_memchr(const void *array, int value, size_t size);
 void	*ft_memcpy(void *dest, const void *src, size_t size);
 int		ft_memcmp(const void *array1, const void *array2, size_t size);
 void	*ft_memmove(void *dest, const void *src, size_t size);
@@ -42,5 +42,8 @@ int		ft_atoi(char *array);
 
 void	*ft_calloc(size_t num_elements, size_t elements_size);
 char	*ft_strdup(const char *src);
+
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char    *ft_strjoin(char const *s1, char const *s2);
 
 #endif

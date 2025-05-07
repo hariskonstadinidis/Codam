@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 15:39:39 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/03 15:24:38 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:22:13 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ char	*ft_strchr(char *letter, int a)
 {
 	while (*letter)
 	{
-		if (*letter == a)
-			return ((char *)letter);
+		if (*letter == (char)a)
+			return (letter);
 		else
 			letter++;
 	}
-	if (a == '\0')
+	if ((char)a == '\0')
 		return (letter);
 	return (NULL);
 }
