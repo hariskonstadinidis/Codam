@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/07 16:42:32 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/07 16:45:00 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/08 15:06:00 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,14 @@ char	*ft_itoa(int n)
 	size_t	len;
 	char	*str;
 
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
 	len = get_num_length(n);
 	str = malloc(len + 1);
-	if (!str)
+	if (str == NULL)
 		return (NULL);
 	str[len] = '\0';
+	len--;
 	if (n == 0)
 		str[0] = '0';
 	else if (n < 0)
@@ -51,7 +54,7 @@ char	*ft_itoa(int n)
 	}
 	while (n > 0)
 	{
-		str[--len] = (n % 10) + '0';
+		str[len--] = (n % 10) + '0';
 		n /= 10;
 	}
 	return (str);

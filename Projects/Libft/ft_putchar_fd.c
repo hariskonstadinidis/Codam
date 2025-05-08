@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/11 16:29:55 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/04/11 16:46:09 by hkonstan         ###   ########.fr       */
+/*   Created: 2025/05/08 14:25:21 by hariskon          #+#    #+#             */
+/*   Updated: 2025/05/08 15:03:18 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 
-void	ft_printer(char a)
+void	ft_putchar_fd(char c, int fd)
 {
-	write(1, &a, 1);
-}
-
-void	main(void)
-{
-	ft_printer('a');
+	write(fd, &c, 1);
 }
