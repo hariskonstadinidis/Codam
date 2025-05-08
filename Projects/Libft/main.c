@@ -6,14 +6,14 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:44:23 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/08 13:56:14 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/08 15:50:05 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "libft.h"
 
-char myind(unsigned int, char);
+// char myind(unsigned int, char);
 
 int main(void)
 {
@@ -24,11 +24,11 @@ int main(void)
     // char a[10] = "teste";
     // printf("%p", ft_strchr(a, 1024));
 
-//     char *s1 = NULL;
-//     char *s2 = "Konidis";
+    //     char *s1 = NULL;
+    //     char *s2 = "Konidis";
 
-//     char *new = ft_strjoin(s1, s2);
-//     printf("%s", new);
+    //     char *new = ft_strjoin(s1, s2);
+    //     printf("%s", new);
 
     // char *a = "lorem \n ipsum \t dolor \n sit \t amet";
     // char *b = "loretm";
@@ -40,13 +40,17 @@ int main(void)
     // int a = 9;
 
     // printf("%s", ft_itoa(a));
+    
 
-    char *a = "haris";
+    // ***
+    // char *a = "haris";
 
-    printf("%s", ft_strmapi("haris", myind));
+    // printf("%s", ft_strmapi("haris", myind));
+
+    ft_putnbr_fd(-2147483648, 1);
 }
-
-char myind(unsigned int, char a)
-{
-    return(ft_toupper((int)a));
-}
+// ***
+// char myind(unsigned int, char a)
+// {
+//     return(ft_toupper((int)a));
+// }

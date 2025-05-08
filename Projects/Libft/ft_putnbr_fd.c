@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 14:46:30 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/08 14:52:26 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/08 15:50:56 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,25 @@
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	char	*num_to_str;
+	char	num[10];
+	int		i;
 
-	num_to_str = ft_itoa(n);
-	write(fd, num_to_str, ft_strlen(num_to_str));
+	i = 0;
+	if (n < 0)
+	{
+		write(fd, "-", 1);
+		if (n == -2147483648)
+			write(fd, "2147483648", 11);
+		n = -n;
+	}
+	if (n == 0)
+		write(fd, "0", 1);
+	while (n > 0)
+	{
+		num[i] = (n % 10) + '0';
+		n /= 10;
+		i++;
+	}
+	while (i >= 0)
+		write(fd, &num[--i], 1);
 }

@@ -56,4 +56,9 @@ clean:
 fclean: clean
 	$(RM) $(NAME) 
 
-re: fclean all
+re: fclean all 
+
+myclean:
+	$(MAKE) fclean
+	$(MAKE) all
+	$(MAKE) clean
