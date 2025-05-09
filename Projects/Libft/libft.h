@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:20:16 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/08 14:54:47 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/09 14:39:18 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int		ft_strlen(const char *array);
 char	*ft_strchr(char *letter, int a);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t size);
 char	*ft_strrchr(char *letter, int a);
-int		ft_strncmp(const char *s1, const char *s2, int size);
+int		ft_strncmp(const char *s1, const char *s2, size_t size);
 
 void	*ft_memset(void *array, int value, size_t size);
 void	*ft_memchr(const void *array, int value, size_t size);

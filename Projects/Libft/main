@@ -6,14 +6,16 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/03 15:44:23 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/08 15:50:05 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/05/09 16:20:24 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include <stdio.h>
 #include "libft.h"
 
 // char myind(unsigned int, char);
+int	count(const char *a, char s);
 
 int main(void)
 {
@@ -47,10 +49,33 @@ int main(void)
 
     // printf("%s", ft_strmapi("haris", myind));
 
-    ft_putnbr_fd(-2147483648, 1);
+    // ft_putnbr_fd(-2147483648LL, 1);
+    // write(1, "\n", 1);
+const char *a = "abc dd";
+printf("%d\n", count(a, ' '));
+
 }
 // ***
 // char myind(unsigned int, char a)
 // {
 //     return(ft_toupper((int)a));
 // }
+
+int	count(const char *a, char s)
+{
+	ssize_t	i;
+	size_t	count;
+
+	i = 0;
+	count = 0;
+	while (a[i])
+	{
+		while (a[i] == s)
+			i++;
+		if (a[i++] != '\0')
+			count++;
+		while (a[i] != s && a[i] != '\0')
+			i++;
+	}
+	return (count);
+}
