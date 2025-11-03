@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:12:04 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/03 16:01:03 by hkonstan         ###   ########.fr       */
+/*   Updated: 2025/11/03 21:49:41 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ t_data	*init_setup(int argc, char **argv, char **envp)
 		return (write(2, "Malloc Failed in cmds parsing", 30), NULL);
 	data->paths = parse_paths(envp);
 	if (!data->paths)
-		return (free_data(data), write(2, "All_fail in par", 25), NULL);
+		return (free_data(data), write(2, "All_fail in par", 16), NULL);
 	path_check(data->cmds, data->paths);
 	return (data);
 }

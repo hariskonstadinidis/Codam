@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:42:13 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/03 18:12:16 by hkonstan         ###   ########.fr       */
+/*   Updated: 2025/11/03 22:45:33 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,14 @@
 // 		printf("%s\n", paths[i++]);
 // }
 
-static void	safe_pipe(int *pipefd, t_data *data)
+static void	safe_pipe(t_data *data)
 {
-	if (pipe(pipefd) == -1)
+	if (pipe(data->pipefd) < 0)
 	{
+		close(data->input_fd);
+		close(data->pipefd[0]);
+		close(data->pipefd[1]);
 		free_data(data);
-		// close_fds(data);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -74,7 +76,7 @@ static int	execute_loop(t_data *data)
 	i = 0;
 	while (i < (data->cmds_count) - 1)
 	{
-		safe_pipe(data->pipefd, data);
+		safe_pipe(data);
 		data->proccess = fork();
 		if (data->proccess < 0)
 			return (perror("Fork failed"), 0);
@@ -94,7 +96,7 @@ static int	execute_loop(t_data *data)
 		{
 			close(data->input_fd);
 			close(data->pipefd[1]);
-			data->input_fd = (data->pipefd)[0];
+			data->input_fd = data->pipefd[0];
 		}
 		i++;
 	}
@@ -109,10 +111,9 @@ int	execute_last(t_data *data)
 	data->outfile_fd = file_open(data->argv[data->argc - 1], OUT);
 	data->proccess = fork();
 	if (data->proccess < 0)
-		return (free_cmds(data->cmds), perror("Fork failed"), 1);
+		return (perror("Fork failed"), 1);
 	else if (data->proccess == 0)
 	{
-		printf("%s", data->cmds[last_cmd][0]);
 		if (access(data->cmds[last_cmd][0], X_OK))
 			return (perror("Access failed"), 0);
 		dup2(data->input_fd, STDIN_FILENO);
@@ -120,13 +121,14 @@ int	execute_last(t_data *data)
 		dup2(data->outfile_fd, STDOUT_FILENO);
 		close(data->outfile_fd);
 		execve((data->cmds[last_cmd][0]), data->cmds[last_cmd], data->envp);
-		// close_fds();
+		close(data->pipefd[0]);
 		return (perror("Execve failed"), 0);
 	}
 	else
 	{
-		close(data->input_fd);
+		close(data->pipefd[0]);
 		close(data->pipefd[1]);
+		close(data->outfile_fd);
 	}
 	return (1);
 }
@@ -150,7 +152,6 @@ int	main(int argc, char **argv, char **envp)
 		return (free_data(data), write(2, "Loop Fork Failed", 12), 1);
 	if (!execute_last(data))
 		return (free_data(data), write(2, "Last Fork Failed", 12), 1);
-	close(data->outfile_fd);
 	free_data(data);
 	return (0);
 }
