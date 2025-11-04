@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:42:13 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/03 22:45:33 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/04 16:35:24 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ static int	execute_loop(t_data *data)
 			close(data->input_fd);
 			dup2(data->pipefd[1], STDOUT_FILENO);
 			close(data->pipefd[1]);
-			execve(data->cmds[i][0], data->cmds[i], data->envp);
 			close(data->pipefd[0]);
+			execve(data->cmds[i][0], data->cmds[i], data->envp);
 			return (perror("Execve failed"), 0);
 		}
 		else
@@ -120,8 +120,9 @@ int	execute_last(t_data *data)
 		close(data->input_fd);
 		dup2(data->outfile_fd, STDOUT_FILENO);
 		close(data->outfile_fd);
-		execve((data->cmds[last_cmd][0]), data->cmds[last_cmd], data->envp);
 		close(data->pipefd[0]);
+		close(data->pipefd[1]);
+		execve((data->cmds[last_cmd][0]), data->cmds[last_cmd], data->envp);
 		return (perror("Execve failed"), 0);
 	}
 	else
@@ -149,9 +150,9 @@ int	main(int argc, char **argv, char **envp)
 	if (data->input_fd < 0)
 		return (free_data(data), perror("open infile failed"), 1);
 	if (!execute_loop(data))
-		return (free_data(data), write(2, "Loop Fork Failed", 12), 1);
+		return (close(data->pipefd[0]), close(data->pipefd[1]), free_data(data), 1);
 	if (!execute_last(data))
-		return (free_data(data), write(2, "Last Fork Failed", 12), 1);
+		return (close(data->pipefd[0]), close(data->pipefd[1]), free_data(data), 1);
 	free_data(data);
 	return (0);
 }
