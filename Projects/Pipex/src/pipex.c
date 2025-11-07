@@ -6,53 +6,19 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:42:13 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/04 16:35:24 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:08:30 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-// static void	print_argvs(char ***cmds, char **paths)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	while (cmds[i])
-// 	{
-// 		j = 0;
-// 		while (cmds[i][j])
-// 		{
-// 			printf("%s ", cmds[i][j]);
-// 			j++;
-// 		}
-// 		printf("%s ", cmds[i][j]);
-// 		printf("\n");
-// 		i++;
-// 	}
-// 	printf("\n");
-// 	i = 0;
-// 	if (!paths)
-// 		return ;
-// 	while (paths[i])
-// 		printf("%s\n", paths[i++]);
-// }
-
-static void	safe_pipe(t_data *data)
-{
-	if (pipe(data->pipefd) < 0)
-	{
-		close(data->input_fd);
-		close(data->pipefd[0]);
-		close(data->pipefd[1]);
-		free_data(data);
-		exit(EXIT_FAILURE);
-	}
-}
-
-/// @brief opens a file with the given filepath
-/// @param filename the path of the file to open  
-/// @return file descriptor, -1 on failure
+/// @brief  Opens a file in the mode specified by the in_out parameter.
+///         - IN:      Opens the file for reading only.
+///         - OUT:     Opens (or creates) the file for writing and truncates it.
+///         - APPEND:  Opens (or creates) the file for writing in append mode.
+/// @param  filename Name of the file to open.
+/// @param  in_out   File mode indicator (IN, OUT, or APPEND).
+/// @return File descriptor on success, or -1 on failure.
 static int	file_open(char *filename, enum e_in_out in_out)
 {
 	int	fd;
@@ -64,11 +30,46 @@ static int	file_open(char *filename, enum e_in_out in_out)
 		fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (in_out == APPEND)
 		fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (fd == -1)
-		perror("Failed to open infile");
 	return (fd);
 }
 
+/// @brief  Executes one command from the parsed command list in a child 
+///			process. Redirects STDIN and STDOUT to the correct file descriptors,
+///         closes unused pipe ends, and replaces the process image with
+///         the command using execve().
+/// @param  data Main data structure containing command info, fds, and envp.
+/// @param  i    Index of the command to execute.
+/// @note   On failure (access, dup2, or execve), prints an error with perror()
+///         and returns. The process should exit afterward to avoid undefined 
+///			behavior.
+static void	child_proccess(t_data *data, int i)
+{
+	if (access(data->cmds[i][0], X_OK) == -1)
+	{
+		perror("Access failed");
+		return ;
+	}
+	if (dup2(data->input_fd, STDIN_FILENO) == -1)
+	{
+		perror("Dup2 for STDIN failed");
+		return ;
+	}
+	close(data->input_fd);
+	if (dup2(data->pipefd[1], STDOUT_FILENO) == -1)
+	{
+		perror("Dup2 for STDOUT failed");
+		return ;
+	}
+	close(data->pipefd[1]);
+	close(data->pipefd[0]);
+	execve(data->cmds[i][0], data->cmds[i], data->envp);
+	perror("Execve failed");
+}
+
+/// @brief  Creates pipes and forks child processes for all commands except
+///         the last one. Each child executes command i using child_proccess().
+/// @param  data Main data structure with command info and file descriptors.
+/// @return 1 on success, 0 on failure (after printing an error message).
 static int	execute_loop(t_data *data)
 {
 	int	i;
@@ -76,21 +77,15 @@ static int	execute_loop(t_data *data)
 	i = 0;
 	while (i < (data->cmds_count) - 1)
 	{
-		safe_pipe(data);
+		if (pipe(data->pipefd) < 0)
+			return (close(data->input_fd), perror("Pipe Failed"), 0);
 		data->proccess = fork();
 		if (data->proccess < 0)
 			return (perror("Fork failed"), 0);
 		else if (data->proccess == 0)
 		{
-			if (access(data->cmds[i][0], X_OK) == -1)
-				return (perror("Access failed"), 0);
-			dup2(data->input_fd, STDIN_FILENO);
-			close(data->input_fd);
-			dup2(data->pipefd[1], STDOUT_FILENO);
-			close(data->pipefd[1]);
-			close(data->pipefd[0]);
-			execve(data->cmds[i][0], data->cmds[i], data->envp);
-			return (perror("Execve failed"), 0);
+			child_proccess(data, i);
+			return (0);
 		}
 		else
 		{
@@ -103,56 +98,65 @@ static int	execute_loop(t_data *data)
 	return (1);
 }
 
-int	execute_last(t_data *data)
+/// @brief  Handles execution of the last command in the pipeline.
+///         Opens the output file (append mode if using heredoc), forks,
+///         and runs the last command in the child via child_proccess().
+/// @param  data Main data structure with argc/argv, commands and fds.
+/// @return 1 on success, 0 on failure (after printing an error message).
+static int	execute_last(t_data *data)
 {
 	int	last_cmd;
 
 	last_cmd = data->cmds_count - 1;
-	data->outfile_fd = file_open(data->argv[data->argc - 1], OUT);
+	if (!ft_strncmp(data->argv[1], "heredoc", 8))
+		data->pipefd[1] = file_open(data->argv[data->argc - 1], APPEND);
+	else
+		data->pipefd[1] = file_open(data->argv[data->argc - 1], OUT);
+	if (data->pipefd[1] == -1)
+		return (perror("Open outfile failed"), 0);
 	data->proccess = fork();
 	if (data->proccess < 0)
-		return (perror("Fork failed"), 1);
+		return (perror("Fork failed"), 0);
 	else if (data->proccess == 0)
 	{
-		if (access(data->cmds[last_cmd][0], X_OK))
-			return (perror("Access failed"), 0);
-		dup2(data->input_fd, STDIN_FILENO);
-		close(data->input_fd);
-		dup2(data->outfile_fd, STDOUT_FILENO);
-		close(data->outfile_fd);
-		close(data->pipefd[0]);
-		close(data->pipefd[1]);
-		execve((data->cmds[last_cmd][0]), data->cmds[last_cmd], data->envp);
-		return (perror("Execve failed"), 0);
+		child_proccess(data, last_cmd);
+		return (0);
 	}
 	else
 	{
 		close(data->pipefd[0]);
 		close(data->pipefd[1]);
-		close(data->outfile_fd);
 	}
 	return (1);
 }
 
+/// @brief  Entry point of the program. Initializes data structures, handles
+///         heredoc or input file setup, executes all pipeline commands, and
+///         performs cleanup before exiting.
+/// @param  argc Argument count received from main.
+/// @param  argv Argument vector received from main.
+/// @param  envp Environment variable array received from main.
+/// @return 0 on success, 1 on failure (after printing an error message).
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
-	data = init_setup(argc, argv, envp);
+	data = setup(argc, argv, envp);
 	if (!data)
-		return (free_data(data), write(2, "Initial setup failed", 21), 1);
+		return (free_data(data), 1);
 	if (!ft_strncmp(argv[1], "heredoc", 8))
-		data->input_fd = file_open(argv[2], IN);
-	else
 	{
-		data->input_fd = file_open(argv[1], IN);
+		if (!read_heredoc(data))
+			return (close(data->input_fd), free(data), 1);
 	}
+	else
+		data->input_fd = file_open(argv[1], IN);
 	if (data->input_fd < 0)
 		return (free_data(data), perror("open infile failed"), 1);
 	if (!execute_loop(data))
-		return (close(data->pipefd[0]), close(data->pipefd[1]), free_data(data), 1);
+		return (free_data(data), 1);
 	if (!execute_last(data))
-		return (close(data->pipefd[0]), close(data->pipefd[1]), free_data(data), 1);
+		return (free_data(data), 1);
 	free_data(data);
 	return (0);
 }

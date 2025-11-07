@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+         #
+#    By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/06 14:04:06 by hariskon          #+#    #+#              #
-#    Updated: 2025/11/03 13:46:05 by hkonstan         ###   ########.fr        #
+#    Updated: 2025/11/06 17:04:41 by hariskon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME	:= pipex
 CFLAGS	:= -Wextra -Wall -Werror -g
 
 HEADERS	:= -I ./include
-SRCS	:= src/pipex.c src/parsing.c src/init.c src/free.c
+SRCS	:= src/pipex.c src/parsing.c src/helpers.c src/free.c
 OBJS 	:= $(SRCS:.c=.o)
 
 LIBFT_DIR  := ./libft

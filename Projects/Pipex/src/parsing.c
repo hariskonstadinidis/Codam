@@ -6,13 +6,20 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:12:04 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/04 16:09:33 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:08:29 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-char	***parse_argv(int cmds_count, char **argv)
+/// @brief  Splits each command string from argv into tokens and stores them 
+///         in a null-terminated array of commands. Each command is itself a 
+///         null-terminated array of argument strings.
+/// @param  cmds_count Number of commands to parse from argv.
+/// @param  argv Array of command strings to split.
+/// @return A null-terminated array of commands (char ***), or NULL on failure 
+///         (after printing an error message).
+static char	***parse_argv(int cmds_count, char **argv)
 {
 	char	***cmds;
 	int		i;
@@ -20,44 +27,61 @@ char	***parse_argv(int cmds_count, char **argv)
 	i = 0;
 	cmds = malloc(sizeof(char **) * (cmds_count + 1));
 	if (cmds == NULL)
-		return (write(2, "1st mem alloc in parse_argv failed\n", 36), NULL);
+		return (write(2, "1st mem alloc in parse_argv failed\n", 35), NULL);
 	while (i < cmds_count)
 	{
 		cmds[i] = ft_split(argv[i], ' ');
 		if (!cmds[i])
-			return (free_cmds(cmds),
-				write(2, "2nd mem alloc in parse_argv failed\n", 36), NULL);
+			return (write(2, "2nd mem alloc in parse_argv failed\n", 35), NULL);
 		i++;
 	}
 	cmds[i] = NULL;
 	return (cmds);
 }
 
-char	**parse_paths(char **envp)
+/// @brief  Parses the PATH variable from the environment to obtain executable 
+///         directories. Searches for "PATH=" in envp, appends ":." so the 
+///         current directory is included, and splits the result by ':' into 
+///         an array of directory strings. If no "PATH=" entry is found, only 
+///         the current directory is used.
+/// @param  envp Null-terminated array of environment variable strings.
+/// @return A null-terminated array of directory path strings on success, or 
+///         NULL on failure (after printing an error message).
+static char	**parse_paths(char **envp)
 {
 	int		i;
 	char	**paths;
 	char	*full_path;
 
 	if (envp == NULL)
-		return (write(2, "envp is NULL", 11), NULL);
+		return (write(2, "envp is NULL", 12), NULL);
 	i = 0;
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], "PATH", 4))
+		if (!ft_strncmp(envp[i], "PATH=", 5))
 			break ;
 		else
 			i++;
 	}
 	full_path = ft_strjoin(envp[i], ":.");
 	if (!full_path)
-		return (NULL);
-	paths = ft_split(full_path + 5, ':');
+		return (perror("ft_strjoin failed"), NULL);
+	if (!ft_strncmp(full_path, "PATH=", 5))
+		paths = ft_split(full_path + 5, ':');
+	else
+		paths = ft_split(full_path, ':');
 	if (!paths)
-		return (free(full_path), NULL);
+		return (free(full_path), write(2, "Split Failed", 12), NULL);
 	return (free(full_path), paths);
 }
 
+/// @brief  Joins two path segments into a single string, inserting a '/' 
+///         between them. Used to create full executable paths such as 
+///         "/usr/bin/ls".
+/// @param  s1 The first part of the path (a directory).
+/// @param  s2 The second part of the path (a command name).
+/// @return A newly allocated string containing "s1/s2", or NULL if memory 
+///         allocation fails. The caller is responsible for freeing the result.
 static char	*ft_strjoin_path(char const *s1, char const *s2)
 {
 	char	*new_string;
@@ -86,7 +110,14 @@ static char	*ft_strjoin_path(char const *s1, char const *s2)
 	return (new_string);
 }
 
-int	path_check(char ***cmds, char **paths)
+/// @brief  Checks each command against all given PATH directories and,
+///         if an executable is found, replaces the command name with
+///         its full path. If it doesnt find one it does nothing.
+/// @param cmds  Null-terminated array of commands, where each command is a
+///              null-terminated array of strings (argv-style).
+/// @param paths Null-terminated array of directory paths.
+/// @return 1 on success, or 0 if a memory allocation/join fails.
+static int	path_check(char ***cmds, char **paths)
 {
 	int		i;
 	int		j;
@@ -100,7 +131,7 @@ int	path_check(char ***cmds, char **paths)
 		{
 			temp = ft_strjoin_path(paths[i++], cmds[j][0]);
 			if (!temp)
-				return (free_cmds(cmds), free_paths(paths), 0);
+				return (write(2, "Strjoin_path Failed", 19), 0);
 			if (!access(temp, X_OK))
 			{
 				free(cmds[j][0]);
@@ -115,25 +146,30 @@ int	path_check(char ***cmds, char **paths)
 	return (1);
 }
 
-t_data	*init_setup(int argc, char **argv, char **envp)
+/// @brief  Prepares and initializes the main program data structure.
+///         Validates argument count, allocates memory, parses commands,
+///         retrieves PATH directories, and verifies executable paths.
+/// @param  argc Argument count received from main.
+/// @param  argv Argument vector received from main.
+/// @param  envp Environment variable array received from main.
+/// @return Pointer to a fully initialized t_data structure on success,
+///         or NULL on failure (after printing an error message).
+t_data	*setup(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
 	if (argc <= 4)
-		return (write(2, "Wrong input, put more arguments\n", 33), NULL);
+		return (write(2, "Wrong input, put more arguments\n", 32), NULL);
 	data = init_data(argc, argv, envp);
 	if (!data)
-		return (write(2, "Malloc Failed for struct data", 30), NULL);
-	// if (!ft_strncmp(argv[1], "heredoc", 8))
-	// 	data->cmds = parse_argv(argc - 4, argv + 3);
-	// else
-	// 	data->cmds = parse_argv(argc - 3, argv + 2);
+		return (NULL);
 	data->cmds = parse_argv(data->cmds_count, data->first_cmd);
 	if (!data->cmds)
-		return (write(2, "Malloc Failed in cmds parsing", 30), NULL);
+		return (NULL);
 	data->paths = parse_paths(envp);
 	if (!data->paths)
-		return (free_data(data), write(2, "All_fail in par", 16), NULL);
-	path_check(data->cmds, data->paths);
+		return (NULL);
+	if (!path_check(data->cmds, data->paths))
+		return (NULL);
 	return (data);
 }

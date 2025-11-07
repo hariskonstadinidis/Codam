@@ -3,16 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 17:55:03 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/11/03 15:40:44 by hkonstan         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:09:02 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-void	free_paths(char **paths)
+/// @brief  Frees all memory allocated for the array of path strings.
+///         Each individual string and the array itself are freed safely.
+/// @param  paths Null-terminated array of directory path strings to free.
+static void	free_paths(char **paths)
 {
 	int	i;
 
@@ -25,7 +28,11 @@ void	free_paths(char **paths)
 	paths = NULL;
 }
 
-void	free_cmds(char ***cmds)
+/// @brief  Frees all memory allocated for the command table. Each command 
+///			and its arguments are freed, followed by the main array.
+/// @param  cmds Null-terminated array of commands, where each command is a 
+///         null-terminated array of argument strings.
+static void	free_cmds(char ***cmds)
 {
 	int	i;
 	int	j;
@@ -47,6 +54,10 @@ void	free_cmds(char ***cmds)
 	cmds = NULL;
 }
 
+/// @brief  Frees all dynamically allocated memory within the main data 
+///			structure. This includes command arrays, path arrays, and the
+///			data structure itself.
+/// @param  data Pointer to the t_data structure to free.
 void	free_data(t_data *data)
 {
 	free_cmds(data->cmds);

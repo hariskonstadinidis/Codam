@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:27:19 by hariskon          #+#    #+#             */
-/*   Updated: 2025/10/30 22:37:00 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/07 15:45:47 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	new_string = malloc(total_len);
 	if (new_string == NULL)
 		return (NULL);
-	while (*s1)
-	{
-		new_string[i] = *s1;
-		s1++;
-		i++;
-	}
-	while (*s2)
-	{
-		new_string[i] = *s2;
-		s2++;
-		i++;
-	}
+	if (s1)
+		while (*s1)
+			new_string[i++] = *s1++;
+	if (s2)
+		while (*s2)
+			new_string[i++] = *s2++;
 	new_string[i] = '\0';
 	return (new_string);
 }

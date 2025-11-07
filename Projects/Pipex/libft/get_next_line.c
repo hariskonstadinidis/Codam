@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 16:35:53 by hariskon          #+#    #+#             */
-/*   Updated: 2025/07/22 18:28:46 by hkonstan         ###   ########.fr       */
+/*   Updated: 2025/11/07 13:45:53 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*get_next_line(int fd)
 	char		*nextline;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
+		return (free(saved), saved = NULL, NULL);
 	if (!saved)
 	{
 		saved = malloc(1 * sizeof(char));
@@ -126,6 +126,6 @@ char	*get_next_line(int fd)
 		return (saved = NULL, NULL);
 	saved = get_leftover(saved);
 	if (!saved)
-		return (free(nextline), NULL);
+		return (free(nextline), free(saved), NULL);
 	return (nextline);
 }
