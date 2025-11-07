@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:42:13 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/07 17:08:30 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:42:32 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int	main(int argc, char **argv, char **envp)
 	if (!ft_strncmp(argv[1], "heredoc", 8))
 	{
 		if (!read_heredoc(data))
-			return (close(data->input_fd), free(data), 1);
+			return (free(data), 1);
 	}
 	else
 		data->input_fd = file_open(argv[1], IN);

@@ -6,11 +6,18 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 17:55:03 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/11/07 17:09:02 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:34:57 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
+/// @brief Closed both ends of pipefd.
+/// @param pipefd The int[2] that contains both pipe ends.
+void	close_pipefd(int pipefd[2])
+{
+	close(pipefd[0]);
+	close(pipefd[1]);
+}
 
 /// @brief  Frees all memory allocated for the array of path strings.
 ///         Each individual string and the array itself are freed safely.

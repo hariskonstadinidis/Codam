@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 23:12:51 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/07 17:08:23 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:41:57 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,13 @@ t_data	*init_data(int argc, char **argv, char **envp)
 	return (data);
 }
 
-/// @brief  Implements heredoc functionality by reading input from stdin until 
-///         the specified delimiter is encountered. The collected input is 
-///			written into a pipe, which becomes the new input_fd for subsequent
-///			commands.
+/// @brief  Handles heredoc input by reading lines from stdin until the
+///			specified delimiter is reached. Writes all input lines to a pipe,
+///			which becomes the program’s new input file descriptor.
 /// @param  data Main data structure containing argv and input_fd.
-/// @return 1 on success, or 0 on failure (after printing an error message).
+/// @return 1 on success, or 0 on failure (after printing an error message and 
+///         closing the pipe).
+
 int	read_heredoc(t_data *data)
 {
 	int		pipefd[2];
@@ -65,14 +66,14 @@ int	read_heredoc(t_data *data)
 		return (perror("Pipe failed"), 0);
 	s = get_next_line(0);
 	if (!s)
-		return (write(2, "GNL Failed", 10), 0);
+		return (close_pipefd(pipefd), write(2, "GNL Fail", 8), 0);
 	while (ft_strncmp(s, delimiter, ft_strlen(delimiter)))
 	{
 		write(pipefd[1], s, ft_strlen(s));
 		free(s);
 		s = get_next_line(0);
 		if (!s)
-			return (free(s), write(2, "GNL Failed", 10), 0);
+			return (close_pipefd(pipefd), free(s), write(2, "GNL Fail", 8), 0);
 	}
 	free (s);
 	get_next_line(-1);

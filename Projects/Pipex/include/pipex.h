@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:15:03 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/06 17:04:02 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/07 17:35:11 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ t_data	*setup(int argc, char **argv, char **envp);
 t_data	*init_data(int argc, char **argv, char **envp);
 int		read_heredoc(t_data *data);
 void	free_data(t_data *data);
+void	close_pipefd(int pipefd[2]);
 
 #endif
