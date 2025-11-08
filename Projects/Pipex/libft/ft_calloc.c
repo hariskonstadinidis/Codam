@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 14:45:34 by hariskon          #+#    #+#             */
-/*   Updated: 2025/07/24 15:58:55 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/08 18:02:44 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	void	*ptr;
+	void		*ptr;
+	static int	i = 0;
 
+	i++;
+	if (i == 5)
+		return (NULL);
 	if (nmemb == 0 || size == 0)
 	{
 		ptr = malloc(0);

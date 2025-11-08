@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:12:04 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/07 17:23:21 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/08 18:02:28 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,23 @@
 /// @param  argv Array of command strings to split.
 /// @return A null-terminated array of commands (char ***), or NULL on failure 
 ///         (after printing an error message).
-static char	***parse_argv(int cmds_count, char **argv)
+static int	parse_argv(t_data *data)
 {
-	char	***cmds;
 	int		i;
 
 	i = 0;
-	cmds = malloc(sizeof(char **) * (cmds_count + 1));
-	if (cmds == NULL)
-		return (write(2, "1st mem alloc in parse_argv failed\n", 35), NULL);
-	while (i < cmds_count)
+	data->cmds = ft_calloc(sizeof(char **), (data->cmds_count + 1));
+	if (data->cmds == NULL)
+		return (write(2, "1st mem alloc in parse_argv failed", 34), 0);
+	while (i < data->cmds_count)
 	{
-		cmds[i] = ft_split(argv[i], ' ');
-		if (!cmds[i])
-			return (write(2, "2nd mem alloc in parse_argv failed\n", 35), NULL);
+		data->cmds[i] = ft_split(data->first_cmd[i], ' ');
+		if (!data->cmds[i])
+			return (write(2, "2nd mem alloc in parse_argv fail", 32), 0);
 		i++;
 	}
-	cmds[i] = NULL;
-	return (cmds);
+	data->cmds[i] = NULL;
+	return (1);
 }
 
 /// @brief  Parses the PATH variable from the environment to obtain executable 
@@ -47,32 +46,31 @@ static char	***parse_argv(int cmds_count, char **argv)
 /// @param  envp Null-terminated array of environment variable strings.
 /// @return A null-terminated array of directory path strings on success, or 
 ///         NULL on failure (after printing an error message).
-static char	**parse_paths(char **envp)
+static int	parse_paths(t_data *data)
 {
 	int		i;
-	char	**paths;
 	char	*full_path;
 
-	if (envp == NULL)
-		return (write(2, "envp is NULL", 12), NULL);
+	if (data->envp == NULL)
+		return (write(2, "envp is NULL", 12), 0);
 	i = 0;
-	while (envp[i])
+	while (data->envp[i])
 	{
-		if (!ft_strncmp(envp[i], "PATH=", 5))
+		if (!ft_strncmp(data->envp[i], "PATH=", 5))
 			break ;
 		else
 			i++;
 	}
-	full_path = ft_strjoin(envp[i], ":.");
+	full_path = ft_strjoin(data->envp[i], ":.");
 	if (!full_path)
-		return (perror("ft_strjoin failed"), NULL);
+		return (perror("ft_strjoin failed"), 0);
 	if (!ft_strncmp(full_path, "PATH=", 5))
-		paths = ft_split(full_path + 5, ':');
+		data->paths = ft_split(full_path + 5, ':');
 	else
-		paths = ft_split(full_path, ':');
-	if (!paths)
-		return (free(full_path), write(2, "Split Failed", 12), NULL);
-	return (free(full_path), paths);
+		data->paths = ft_split(full_path, ':');
+	if (!data->paths)
+		return (free(full_path), write(2, "Split Failed", 12), 0);
+	return (free(full_path), 1);
 }
 
 /// @brief  Joins two path segments into a single string, inserting a '/' 
@@ -90,7 +88,7 @@ static char	*ft_strjoin_path(char const *s1, char const *s2)
 
 	i = 0;
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 2;
-	new_string = malloc(total_len);
+	new_string = malloc(sizeof(char) * total_len);
 	if (new_string == NULL)
 		return (NULL);
 	while (*s1)
@@ -162,14 +160,12 @@ t_data	*setup(int argc, char **argv, char **envp)
 		return (write(2, "Wrong input, put more arguments\n", 32), NULL);
 	data = init_data(argc, argv, envp);
 	if (!data)
-		return (NULL);
-	data->cmds = parse_argv(data->cmds_count, data->first_cmd);
-	if (!data->cmds)
-		return (NULL);
-	data->paths = parse_paths(envp);
-	if (!data->paths)
-		return (NULL);
+		return (free_data(data), NULL);
+	if (!parse_argv(data))
+		return (free_data(data), NULL);
+	if (!parse_paths(data))
+		return (free_data(data), NULL);
 	if (!path_check(data->cmds, data->paths))
-		return (NULL);
+		return (free_data(data), NULL);
 	return (data);
 }

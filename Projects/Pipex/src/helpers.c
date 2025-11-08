@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 23:12:51 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/07 17:41:57 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/08 17:56:46 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ t_data	*init_data(int argc, char **argv, char **envp)
 /// @param  data Main data structure containing argv and input_fd.
 /// @return 1 on success, or 0 on failure (after printing an error message and 
 ///         closing the pipe).
-
 int	read_heredoc(t_data *data)
 {
 	int		pipefd[2];

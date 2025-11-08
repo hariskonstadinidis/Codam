@@ -6,7 +6,7 @@
 #    By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/06 14:04:06 by hariskon          #+#    #+#              #
-#    Updated: 2025/11/06 17:04:41 by hariskon         ###   ########.fr        #
+#    Updated: 2025/11/08 17:19:09 by hariskon         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,26 +14,23 @@ NAME	:= pipex
 CFLAGS	:= -Wextra -Wall -Werror -g
 
 HEADERS	:= -I ./include
-SRCS	:= src/pipex.c src/parsing.c src/helpers.c src/free.c
+SRCS	:= src/pipex.c src/parsing.c src/helpers.c src/cleanup_utils.c
 OBJS 	:= $(SRCS:.c=.o)
 
 LIBFT_DIR  := ./libft
 
 LIBFT  := $(LIBFT_DIR)/libft.a
 
-all:$(LIBFT) $(PRINTF) $(NAME)
+all: libft $(NAME)
 
-%.o:make %.c Makefile
-	@cc $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+%.o: %.c Makefile
+	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
-$(NAME): $(OBJS) Makefile
-	@cc $(OBJS) $(LIBFT) $(HEADERS) -o $(NAME)
+$(NAME): $(OBJS) libft Makefile
+	$(CC) $(OBJS) $(LIBFT) $(HEADERS) -o $(NAME)
 
-$(LIBFT):
+libft:
 	$(MAKE) -C $(LIBFT_DIR)
-
-$(PRINTF):
-	$(MAKE) -C $(PRINTF_DIR)
 	
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
@@ -43,6 +40,6 @@ fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
 	@rm -rf $(NAME)
 
-re: clean all
+re: fclean all
 
-.PHONY: all, clean, fclean, re
+.PHONY: all clean fclean re libft

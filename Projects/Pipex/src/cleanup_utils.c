@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free.c                                             :+:      :+:    :+:   */
+/*   cleanup_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 17:55:03 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/11/07 17:34:57 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/08 17:58:13 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ static void	free_cmds(char ***cmds)
 /// @param  data Pointer to the t_data structure to free.
 void	free_data(t_data *data)
 {
-	free_cmds(data->cmds);
-	free_paths(data->paths);
-	free(data);
+	if (data->cmds)
+		free_cmds(data->cmds);
+	if (data->paths)
+		free_paths(data->paths);
+	if (data)
+		free(data);
 }
