@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 13:42:10 by hariskon          #+#    #+#             */
-/*   Updated: 2025/05/07 16:22:19 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:26:50 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		len = 0;
 	else if (new_len - start < len)
 		len = new_len - start;
-	substring = malloc(len + 1);
+	substring = ft_calloc(len + 1, sizeof(char));
 	if (substring == NULL)
 		return (NULL);
 	while (i < len && s[start] != '\0')

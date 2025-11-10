@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:12:04 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/08 18:02:28 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/10 13:36:57 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	parse_paths(t_data *data)
 	}
 	full_path = ft_strjoin(data->envp[i], ":.");
 	if (!full_path)
-		return (perror("ft_strjoin failed"), 0);
+		return (write(2, "ft_strjoin failed", 17), 0);
 	if (!ft_strncmp(full_path, "PATH=", 5))
 		data->paths = ft_split(full_path + 5, ':');
 	else
@@ -88,7 +88,7 @@ static char	*ft_strjoin_path(char const *s1, char const *s2)
 
 	i = 0;
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 2;
-	new_string = malloc(sizeof(char) * total_len);
+	new_string = ft_calloc(sizeof(char), total_len);
 	if (new_string == NULL)
 		return (NULL);
 	while (*s1)
