@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 17:55:03 by hkonstan          #+#    #+#             */
-/*   Updated: 2025/11/10 12:23:55 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/14 13:53:31 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,33 @@ void	close_pipefd(int pipefd[2])
 {
 	close(pipefd[0]);
 	close(pipefd[1]);
+}
+
+void	child_exec_error(t_data *data, int i)
+{
+	char	*cmd;
+
+	cmd = data->cmds[i][0];
+	if (errno == ENOENT)
+	{
+		write(2, "pipex: command not found: ", 27);
+		write(2, cmd, strlen(cmd));
+		write(2, "\n", 1);
+		free_data(data);
+		_exit(127);
+	}
+	if (errno == EACCES)
+	{
+		write(2, "pipex: permission denied: ", 27);
+		write(2, cmd, strlen(cmd));
+		write(2, "\n", 1);
+		free_data(data);
+		_exit(126);
+	}
+	write(2, "pipex: ", 7);
+	perror(cmd);
+	free_data(data);
+	_exit(1);
 }
 
 /// @brief  Frees all memory allocated for the array of path strings.
@@ -73,6 +100,8 @@ void	free_data(t_data *data)
 			free_cmds(data->cmds);
 		if (data->paths)
 			free_paths(data->paths);
+		if (data->pids)
+			free(data->pids);
 		free(data);
 	}
 }

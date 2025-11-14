@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:42:13 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/10 13:40:47 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/14 13:50:17 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	file_open(char *filename, enum e_in_out in_out)
 		fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (in_out == APPEND)
 		fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	if (fd == -1)
+		perror(filename);
 	return (fd);
 }
 
@@ -44,26 +46,17 @@ static int	file_open(char *filename, enum e_in_out in_out)
 ///			behavior.
 static void	child_proccess(t_data *data, int i)
 {
-	if (access(data->cmds[i][0], X_OK) == -1)
-	{
-		perror("Access failed");
-		return ;
-	}
+	if (data->input_fd == -1)
+		(close_pipefd(data->pipefd), free_data(data), _exit(EXIT_FAILURE));
 	if (dup2(data->input_fd, STDIN_FILENO) == -1)
-	{
-		perror("Dup2 for STDIN failed");
-		return ;
-	}
+		(perror("Dup2 for STDIN failed"), _exit(EXIT_FAILURE));
 	close(data->input_fd);
 	if (dup2(data->pipefd[1], STDOUT_FILENO) == -1)
-	{
-		perror("Dup2 for STDOUT failed");
-		return ;
-	}
+		(perror("Dup2 for STDOUT failed"), _exit(EXIT_FAILURE));
 	close(data->pipefd[1]);
 	close(data->pipefd[0]);
 	execve(data->cmds[i][0], data->cmds[i], data->envp);
-	perror("Execve failed");
+	child_exec_error(data, i);
 }
 
 /// @brief  Creates pipes and forks child processes for all commands except
@@ -79,17 +72,15 @@ static int	execute_loop(t_data *data)
 	{
 		if (pipe(data->pipefd) < 0)
 			return (close(data->input_fd), perror("Pipe Failed"), 0);
-		data->proccess = fork();
-		if (data->proccess < 0)
+		data->pids[i] = fork();
+		if (data->pids[i] < 0)
 			return (perror("Fork failed"), 0);
-		else if (data->proccess == 0)
-		{
+		else if (data->pids[i] == 0)
 			child_proccess(data, i);
-			return (0);
-		}
 		else
 		{
-			close(data->input_fd);
+			if (data->input_fd != -1)
+				close(data->input_fd);
 			close(data->pipefd[1]);
 			data->input_fd = data->pipefd[0];
 		}
@@ -108,25 +99,19 @@ static int	execute_last(t_data *data)
 	int	last_cmd;
 
 	last_cmd = data->cmds_count - 1;
-	if (!ft_strncmp(data->argv[1], "heredoc", 8))
+	if (!ft_strncmp(data->argv[1], "here_doc", 8))
 		data->pipefd[1] = file_open(data->argv[data->argc - 1], APPEND);
 	else
 		data->pipefd[1] = file_open(data->argv[data->argc - 1], OUT);
 	if (data->pipefd[1] == -1)
-		return (perror("Open outfile failed"), 0);
-	data->proccess = fork();
-	if (data->proccess < 0)
-		return (perror("Fork failed"), 0);
-	else if (data->proccess == 0)
-	{
-		child_proccess(data, last_cmd);
 		return (0);
-	}
+	data->pids[data->cmds_count - 1] = fork();
+	if (data->pids[data->cmds_count - 1] < 0)
+		return (perror("Fork failed"), 0);
+	else if (data->pids[data->cmds_count - 1] == 0)
+		child_proccess(data, last_cmd);
 	else
-	{
-		close(data->pipefd[0]);
-		close(data->pipefd[1]);
-	}
+		close_pipefd(data->pipefd);
 	return (1);
 }
 
@@ -144,19 +129,16 @@ int	main(int argc, char **argv, char **envp)
 	data = setup(argc, argv, envp);
 	if (!data)
 		return (1);
-	if (!ft_strncmp(argv[1], "heredoc", 8))
+	if (!ft_strncmp(argv[1], "here_doc", 8))
 	{
 		if (!read_heredoc(data))
-			return (1);
+			return (free_data(data), 1);
 	}
 	else
 		data->input_fd = file_open(argv[1], IN);
-	if (data->input_fd < 0)
-		return (free_data(data), perror("open infile failed"), 1);
 	if (!execute_loop(data))
-		return (free_data(data), 1);
+		return (pid_wait_and_free(data));
 	if (!execute_last(data))
-		return (free_data(data), 1);
-	free_data(data);
-	return (0);
+		return (pid_wait_and_free(data));
+	return (pid_wait_and_free(data));
 }

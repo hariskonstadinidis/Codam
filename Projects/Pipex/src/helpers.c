@@ -6,11 +6,35 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 23:12:51 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/08 17:56:46 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/13 17:31:04 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
+
+int	pid_wait_and_free(t_data *data)
+{
+	int	i;
+	int	status;
+	int	exit_code;
+
+	i = 0;
+	while (data->pids[i])
+	{
+		if (waitpid(data->pids[i], &status, 0) > 0)
+		{
+			if (WIFEXITED(status))
+				exit_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				exit_code = 128 + WTERMSIG(status);
+			else
+				exit_code = 1;
+		}
+		i++;
+	}
+	free_data(data);
+	return (exit_code);
+}
 
 /// @brief  Allocates and initializes the main data structure used by the
 ///			program. Stores argument and environment pointers, determines the
@@ -43,6 +67,9 @@ t_data	*init_data(int argc, char **argv, char **envp)
 		data->cmds_count = (argc - 3);
 		data->first_cmd = argv + 2;
 	}
+	data->pids = ft_calloc(data->cmds_count + 1, sizeof(pid_t));
+	if (!data->pids)
+		return (NULL);
 	return (data);
 }
 

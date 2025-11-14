@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:15:03 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/10 12:28:15 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/13 16:40:12 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_data
 	int		input_fd;
 	int		cmds_count;
 	char	**first_cmd;
-	pid_t	proccess;
+	pid_t	*pids;
 }	t_data;
 
 int		main(int argc, char **argv, char **envp);
@@ -49,5 +49,6 @@ t_data	*init_data(int argc, char **argv, char **envp);
 int		read_heredoc(t_data *data);
 void	free_data(t_data *data);
 void	close_pipefd(int pipefd[2]);
-
+int		pid_wait_and_free(t_data *data);
+void	child_exec_error(t_data *data, int i);
 #endif

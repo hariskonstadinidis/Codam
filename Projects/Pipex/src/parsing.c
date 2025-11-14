@@ -6,7 +6,7 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:12:04 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/10 13:36:57 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/14 13:46:07 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	parse_argv(t_data *data)
 	int		i;
 
 	i = 0;
-	data->cmds = ft_calloc(sizeof(char **), (data->cmds_count + 1));
+	data->cmds = ft_calloc((data->cmds_count + 1), sizeof(char **));
 	if (data->cmds == NULL)
 		return (write(2, "1st mem alloc in parse_argv failed", 34), 0);
 	while (i < data->cmds_count)
@@ -87,23 +87,24 @@ static char	*ft_strjoin_path(char const *s1, char const *s2)
 	size_t	i;
 
 	i = 0;
+	if (!s2 || *s2 == '\0')
+	{
+		new_string = ft_strdup("");
+		if (!new_string)
+			return (NULL);
+		return (new_string);
+	}
 	total_len = ft_strlen(s1) + ft_strlen(s2) + 2;
 	new_string = ft_calloc(sizeof(char), total_len);
 	if (new_string == NULL)
 		return (NULL);
-	while (*s1)
-	{
-		new_string[i] = *s1;
-		s1++;
-		i++;
-	}
+	if (s1)
+		while (*s1)
+			new_string[i++] = *(s1++);
 	new_string[i++] = '/';
-	while (*s2)
-	{
-		new_string[i] = *s2;
-		s2++;
-		i++;
-	}
+	if (s2)
+		while (*s2)
+			new_string[i++] = *(s2++);
 	new_string[i] = '\0';
 	return (new_string);
 }
