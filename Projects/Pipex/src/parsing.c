@@ -6,19 +6,21 @@
 /*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:12:04 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/14 13:46:07 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/17 16:20:30 by hariskon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-/// @brief  Splits each command string from argv into tokens and stores them 
-///         in a null-terminated array of commands. Each command is itself a 
-///         null-terminated array of argument strings.
-/// @param  cmds_count Number of commands to parse from argv.
-/// @param  argv Array of command strings to split.
-/// @return A null-terminated array of commands (char ***), or NULL on failure 
-///         (after printing an error message).
+/// @brief Parses and splits each command string into its argument list.
+/// @details Allocates the cmds array and uses ft_split() to break each
+///          command into tokens separated by spaces. If a command results
+///          in no tokens (empty or whitespace-only), it is replaced with a
+///          single empty string to allow consistent error handling later.
+///          Any memory allocation failure stops the process prints the 
+///			 corresponding error and returns 0.
+/// @param data Pointer to the main program state.
+/// @return 1 on success, or 0 if any allocation fails.
 static int	parse_argv(t_data *data)
 {
 	int		i;
@@ -26,26 +28,32 @@ static int	parse_argv(t_data *data)
 	i = 0;
 	data->cmds = ft_calloc((data->cmds_count + 1), sizeof(char **));
 	if (data->cmds == NULL)
-		return (write(2, "1st mem alloc in parse_argv failed", 34), 0);
+		return (write(2, "ft_calloc in parse_argv failed", 30), 0);
 	while (i < data->cmds_count)
 	{
 		data->cmds[i] = ft_split(data->first_cmd[i], ' ');
 		if (!data->cmds[i])
-			return (write(2, "2nd mem alloc in parse_argv fail", 32), 0);
+			return (write(2, "ft_split in parse_argv fail", 27), 0);
+		if (!data->cmds[i][0])
+		{
+			free(data->cmds[i]);
+			if (!build_empty_cmd(&data->cmds[i]))
+				return (write(2, "build_empty_cmd in parse_argv fail", 34), 0);
+		}
 		i++;
 	}
 	data->cmds[i] = NULL;
 	return (1);
 }
 
-/// @brief  Parses the PATH variable from the environment to obtain executable 
-///         directories. Searches for "PATH=" in envp, appends ":." so the 
-///         current directory is included, and splits the result by ':' into 
-///         an array of directory strings. If no "PATH=" entry is found, only 
-///         the current directory is used.
-/// @param  envp Null-terminated array of environment variable strings.
-/// @return A null-terminated array of directory path strings on success, or 
-///         NULL on failure (after printing an error message).
+/// @brief Extracts and prepares the system PATH directories.
+/// @details Searches envp for the PATH variable, appends ":." to include
+///          the current directory, and splits the result into an array
+///          of directory paths. The resulting list is stored in data->paths
+///          for later command lookup. Returns 0 if any memory allocation
+///          fails or if PATH cannot be processed.
+/// @param data Pointer to the main program state.
+/// @return 1 on success, or 0 on failure.
 static int	parse_paths(t_data *data)
 {
 	int		i;
@@ -73,86 +81,76 @@ static int	parse_paths(t_data *data)
 	return (free(full_path), 1);
 }
 
-/// @brief  Joins two path segments into a single string, inserting a '/' 
-///         between them. Used to create full executable paths such as 
-///         "/usr/bin/ls".
-/// @param  s1 The first part of the path (a directory).
-/// @param  s2 The second part of the path (a command name).
-/// @return A newly allocated string containing "s1/s2", or NULL if memory 
-///         allocation fails. The caller is responsible for freeing the result.
-static char	*ft_strjoin_path(char const *s1, char const *s2)
-{
-	char	*new_string;
-	size_t	total_len;
-	size_t	i;
-
-	i = 0;
-	if (!s2 || *s2 == '\0')
-	{
-		new_string = ft_strdup("");
-		if (!new_string)
-			return (NULL);
-		return (new_string);
-	}
-	total_len = ft_strlen(s1) + ft_strlen(s2) + 2;
-	new_string = ft_calloc(sizeof(char), total_len);
-	if (new_string == NULL)
-		return (NULL);
-	if (s1)
-		while (*s1)
-			new_string[i++] = *(s1++);
-	new_string[i++] = '/';
-	if (s2)
-		while (*s2)
-			new_string[i++] = *(s2++);
-	new_string[i] = '\0';
-	return (new_string);
-}
-
-/// @brief  Checks each command against all given PATH directories and,
-///         if an executable is found, replaces the command name with
-///         its full path. If it doesnt find one it does nothing.
-/// @param cmds  Null-terminated array of commands, where each command is a
-///              null-terminated array of strings (argv-style).
-/// @param paths Null-terminated array of directory paths.
-/// @return 1 on success, or 0 if a memory allocation/join fails.
-static int	path_check(char ***cmds, char **paths)
+/// @brief Attempts to resolve a command name to an absolute executable path.
+/// @details Iterates through all directories in paths and joins each one
+///          with the command name. If an executable file is found (checked
+///          using access with X_OK), the command name is replaced with its
+///          full path. Temporary join strings are freed on each iteration.
+///          If no match is found, the command is left unchanged.
+/// @param cmds NUll terminated array of argv-style command arrays.
+/// @param j Index of the command to check.
+/// @param paths Null-terminated array of PATH directories.
+/// @return 1 on success, or 0 if memory allocation for the join fails.
+static int	path_check_one(char ***cmds, int j, char **paths)
 {
 	int		i;
-	int		j;
 	char	*temp;
+
+	i = 0;
+	while (paths[i])
+	{
+		temp = ft_strjoin_path(paths[i], cmds[j][0]);
+		if (!temp)
+			return (write(2, "Strjoin_path Failed", 19), 0);
+		if (!access(temp, X_OK))
+		{
+			free(cmds[j][0]);
+			cmds[j][0] = temp;
+			return (1);
+		}
+		free(temp);
+		i++;
+	}
+	return (1);
+}
+
+/// @brief Resolves each command in the pipeline using the PATH directories.
+/// @details Iterates through all parsed commands and attempts to replace
+///          each command name with its full executable path using
+///          path_check_one(). Commands that are already absolute paths or
+///          empty are left unchanged. Stops and returns 0 if any join or
+///          allocation fails.
+/// @param cmds A NUll terminated array of argv-style command arrays.
+/// @param paths A NULL-terminated array of directory path strings.
+/// @param data Pointer to the main program state.
+/// @return 1 on success, or 0 if a resolution step fails.
+static int	path_check(char ***cmds, char **paths, t_data *data)
+{
+	int		j;
 
 	j = 0;
 	while (cmds[j])
 	{
-		i = 0;
-		while (paths[i])
+		if (data->first_cmd && data->first_cmd[j])
 		{
-			temp = ft_strjoin_path(paths[i++], cmds[j][0]);
-			if (!temp)
-				return (write(2, "Strjoin_path Failed", 19), 0);
-			if (!access(temp, X_OK))
-			{
-				free(cmds[j][0]);
-				cmds[j][0] = temp;
-				break ;
-			}
-			else
-				free(temp);
+			if (!path_check_one(cmds, j, paths))
+				return (0);
 		}
 		j++;
 	}
 	return (1);
 }
 
-/// @brief  Prepares and initializes the main program data structure.
-///         Validates argument count, allocates memory, parses commands,
-///         retrieves PATH directories, and verifies executable paths.
-/// @param  argc Argument count received from main.
-/// @param  argv Argument vector received from main.
-/// @param  envp Environment variable array received from main.
-/// @return Pointer to a fully initialized t_data structure on success,
-///         or NULL on failure (after printing an error message).
+/// @brief Initializes and prepares the main program state.
+/// @details Validates argument count, allocates and initializes the t_data
+///          structure, parses all commands into argv-style arrays, extracts
+///          PATH directories, and resolves each command using the PATH list.
+///          On any failure, allocated resources are freed and NULL is returned.
+/// @param argc Argument count from main().
+/// @param argv Argument vector from main().
+/// @param envp Environment variables passed to the program.
+/// @return Pointer to an initialized t_data structure on success, or NULL on
+///         failure.
 t_data	*setup(int argc, char **argv, char **envp)
 {
 	t_data	*data;
@@ -166,7 +164,7 @@ t_data	*setup(int argc, char **argv, char **envp)
 		return (free_data(data), NULL);
 	if (!parse_paths(data))
 		return (free_data(data), NULL);
-	if (!path_check(data->cmds, data->paths))
+	if (!path_check(data->cmds, data->paths, data))
 		return (free_data(data), NULL);
 	return (data);
 }
