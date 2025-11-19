@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 14:45:04 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/17 16:35:27 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/19 18:35:47 by hkonstan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,12 @@ static int	file_open(char *filename, enum e_in_out in_out)
 	else if (in_out == APPEND)
 		fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	if (fd == -1)
+	{
 		perror(filename);
+		fd = open("/dev/null", O_RDONLY);
+		if (fd == -1)
+			return (perror("Failed to open /dev/null"), -1);
+	}
 	return (fd);
 }
 
@@ -130,16 +135,20 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
+	if (!argc_check(argv, argc))
+		return (1);
 	data = setup(argc, argv, envp);
 	if (!data)
 		return (1);
-	if (!ft_strncmp(argv[1], "here_doc", 8))
+	if (!ft_strncmp(argv[1], "here_doc", 9))
 	{
 		if (!read_heredoc(data))
 			return (free_data(data), 1);
 	}
 	else
 		data->input_fd = file_open(argv[1], IN);
+	if (data->input_fd == -1)
+		return (free_data(data), 1);
 	if (!execute_loop(data))
 		return (pid_wait_and_free(data));
 	if (!execute_last(data))

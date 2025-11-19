@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 13:42:13 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/17 16:36:50 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/19 18:14:50 by hkonstan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,16 @@ static int	file_open(char *filename, enum e_in_out in_out)
 	else if (in_out == OUT)
 		fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
+	{
 		perror(filename);
+		fd = open("/dev/null", O_RDONLY);
+		if (fd == -1)
+			return (perror("Failed to open /dev/null"), -1);
+	}
 	return (fd);
 }
 
-//// @brief Executes a single pipeline command in the child process.
+/// @brief Executes a single pipeline command in the child process.
 /// @details Sets up the child's file descriptors by redirecting the current
 ///          input source to STDIN, redirecting the pipe's write end to STDOUT,
 ///          and closing all unused FDs. If any redirection fails, the child
@@ -48,8 +53,6 @@ static int	file_open(char *filename, enum e_in_out in_out)
 /// @param i Index of the command to execute within the parsed command list.
 static void	child_proccess(t_data *data, int i)
 {
-	if (data->input_fd == -1)
-		(close_pipefd(data->pipefd), free_data(data), _exit(EXIT_FAILURE));
 	if (dup2(data->input_fd, STDIN_FILENO) == -1)
 		(perror("Dup2 for STDIN failed"), _exit(EXIT_FAILURE));
 	close(data->input_fd);
@@ -61,7 +64,7 @@ static void	child_proccess(t_data *data, int i)
 	child_exec_error(data, i);
 }
 
-//// @brief Executes all pipeline commands except the final one.
+/// @brief Executes all pipeline commands except the final one.
 /// @details Iterates through each intermediate command, creating a pipe for
 ///          each stage, forking a child to execute the command, and preparing
 ///          the read end of the pipe as the input for the next iteration.
@@ -97,7 +100,7 @@ static int	execute_loop(t_data *data)
 	return (1);
 }
 
-//// @brief Executes the final command in the pipeline.
+/// @brief Executes the final command in the pipeline.
 /// @details Opens the output file in truncate mode, forks a child to run the
 ///          last command, and closes the pipe file descriptors in the parent.
 ///          The child's PID is stored for later synchronization via wait().
@@ -108,6 +111,7 @@ static int	execute_last(t_data *data)
 	int	last_cmd;
 
 	last_cmd = data->cmds_count - 1;
+	close(data->pipefd[1]);
 	data->pipefd[1] = file_open(data->argv[data->argc - 1], OUT);
 	if (data->pipefd[1] == -1)
 		return (0);
@@ -135,11 +139,13 @@ int	main(int argc, char **argv, char **envp)
 	t_data	*data;
 
 	if (argc != 5)
-		return (write(2, "Wrong input, put more arguments\n", 32), 1);
+		return (write(2, "Wrong input, put 4 arguments\n", 29), 1);
 	data = setup(argc, argv, envp);
 	if (!data)
 		return (1);
 	data->input_fd = file_open(argv[1], IN);
+	if (data->input_fd == -1)
+		return (free_data(data), 1);
 	if (!execute_loop(data))
 		return (pid_wait_and_free(data));
 	if (!execute_last(data))

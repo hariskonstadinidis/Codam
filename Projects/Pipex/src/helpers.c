@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 23:12:51 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/17 16:24:15 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/19 16:05:22 by hkonstan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ t_data	*init_data(int argc, char **argv, char **envp)
 	data->envp = envp;
 	data->cmds = NULL;
 	data->paths = NULL;
-	if (!ft_strncmp(argv[1], "here_doc", 8))
+	if (!ft_strncmp(argv[1], "here_doc", 9))
 	{
 		data->cmds_count = argc - 4;
 		data->first_cmd = argv + 3;

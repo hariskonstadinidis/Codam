@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 17:12:04 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/17 16:20:30 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/19 17:21:09 by hkonstan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,6 @@ t_data	*setup(int argc, char **argv, char **envp)
 {
 	t_data	*data;
 
-	if (argc <= 4)
-		return (write(2, "Wrong input, put more arguments\n", 32), NULL);
 	data = init_data(argc, argv, envp);
 	if (!data)
 		return (free_data(data), NULL);

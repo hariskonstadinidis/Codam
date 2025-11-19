@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bonus_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 15:02:28 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/17 16:36:00 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/19 18:34:57 by hkonstan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,18 @@ int	read_heredoc(t_data *data)
 	get_next_line(-1);
 	close(pipefd[1]);
 	data->input_fd = pipefd[0];
+	return (1);
+}
+
+int	argc_check(char **argv, int argc)
+{
+	if (!ft_strncmp(argv[1], "here_doc", 9))
+	{
+		if (argc <= 5)
+			return (write(2, "Wrong input, put more arguments\n", 32), 0);
+	}
+	else
+		if (argc <= 4)
+			return (write(2, "Wrong input, put more arguments\n", 32), 0);
 	return (1);
 }

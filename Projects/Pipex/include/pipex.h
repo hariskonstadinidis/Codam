@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hariskon <hariskon@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hkonstan <hkonstan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 13:15:03 by hariskon          #+#    #+#             */
-/*   Updated: 2025/11/17 15:03:59 by hariskon         ###   ########.fr       */
+/*   Updated: 2025/11/19 18:35:06 by hkonstan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int		build_empty_cmd(char ***cmds);
 char	*ft_strjoin_path(char const *s1, char const *s2);
 void	free_data(t_data *data);
 void	close_pipefd(int pipefd[2]);
+int		argc_check(char **argv, int argc);
 int		pid_wait_and_free(t_data *data);
 void	child_exec_error(t_data *data, int i);
 #endif
